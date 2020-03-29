@@ -20,8 +20,7 @@ class Excel():
         self.load = load_workbook(self.workbook_name)
         self.ns = self.load.get_sheet_by_name("Sheet")
         if self.just_created != True:
-            sheet = self.load.get_sheet_by_name("Sheet")
-            max_row = sheet.max_row
+            max_row = self.ns.max_row
             link = data[0]
             found = False
             for x in range(1, max_row+1):
