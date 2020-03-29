@@ -8,7 +8,10 @@ class Data_scraper():
                 if len(location[0]) == 0:
                     raise Exception
             except:
-                location = self.source.xpath("*//a[@class='css-12hd9gg']/text()")
+                try:
+                    location = self.source.xpath("*//a[@class='css-12hd9gg']/text()")
+                except:
+                    locaation = ""
             finally:
                 return location[0]
     def get_space(self):
@@ -20,9 +23,12 @@ class Data_scraper():
             else:
                 raise Exception
         except:
-            space = self.source.xpath("//section[@class='section-overview']//div[@class='css-1ci0qpi']//li[contains(text(), 'Powierzchnia')]//strong/text()")
-            clear_space = str(space[0]).strip().split(" ")
-            space = clear_space[0]
+            try:
+                space = self.source.xpath("//section[@class='section-overview']//div[@class='css-1ci0qpi']//li[contains(text(), 'Powierzchnia')]//strong/text()")
+                clear_space = str(space[0]).strip().split(" ")
+                space = clear_space[0]
+            except:
+                space = ""
         finally:
             return space
 
@@ -35,9 +41,12 @@ class Data_scraper():
             else:
                 raise Exception
         except:
-            rent = self.source.xpath("//section[@class='section-overview']//div[@class='css-1ci0qpi']//li[contains(text(), 'Czynsz')]//strong/text()")
-            clear_rent = str(rent[0]).strip().split(" ")
-            rent = clear_rent[0]
+            try:
+                rent = self.source.xpath("//section[@class='section-overview']//div[@class='css-1ci0qpi']//li[contains(text(), 'Czynsz')]//strong/text()")
+                clear_rent = str(rent[0]).strip().split(" ")
+                rent = clear_rent[0]
+            except:
+                rent = ""
         finally:
             return rent
 
@@ -49,7 +58,10 @@ class Data_scraper():
             else:
                 raise Exception
         except:
-            description = self.source.xpath("*//section[@class='section-description']//div//p/text()")
+            try:
+                description = self.source.xpath("*//section[@class='section-description']//div//p/text()")
+            except:
+                description = ""
         finally:
             description = [str(x).strip() for x in description]
             return description
@@ -83,8 +95,11 @@ class Data_scraper():
             else:
                 raise Exception
         except:
-            div_title = self.soup.find("div", {"class":"css-d2oo9m"}).find("h1")
-            title = str(div_title.text).strip()
+            try:
+                div_title = self.soup.find("div", {"class":"css-d2oo9m"}).find("h1")
+                title = str(div_title.text).strip()
+            except:
+                title = ""
         finally:
             return title
 

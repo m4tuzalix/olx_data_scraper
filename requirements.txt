@@ -2,4 +2,3 @@ openpyxl
 bs4
 lxml
 requests
-unittest

@@ -52,7 +52,7 @@ if __name__ == "__main__":
     page = "1"
     scraper_main = Scraper(city,rooms,price_start,price_end,page) #// declared for the first time to get the number of pages
     pages = scraper_main.page_amount()
-    for x in range(1,pages,1):
+    for x in range(1,10,1):
         scraper_main = Scraper(city,rooms,price_start,price_end,x) #// declared again but this time under the loop which iterates the pages
         links = scraper_main.get_all_adverts()
         get_data = scraper_main.get_adverts_data(links)
