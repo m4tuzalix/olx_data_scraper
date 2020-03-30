@@ -48,6 +48,7 @@ class Test_Date_Scraper(unittest.TestCase):
     def test04_images(self):
         images = self.scraper.get_images()
         self.assertIsInstance(images, list)
+        self.assertGreater(len(images), 0)
 
     def test05_title(self):
         title = self.scraper.get_title()
@@ -56,4 +57,5 @@ class Test_Date_Scraper(unittest.TestCase):
     def test06_description(self):
         description= self.scraper.get_description()
         self.assertIsInstance(description, list)
+        self.assertGreater(len(description), 0)
 

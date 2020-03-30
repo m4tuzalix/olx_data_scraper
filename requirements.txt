@@ -2,3 +2,5 @@ openpyxl
 bs4
 lxml
 requests
+unittest
+sqlite3
