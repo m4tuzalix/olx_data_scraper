@@ -4,6 +4,8 @@ from lxml import html
 from data_scraper import Data_scraper
 from Excel import Excel
 from database import Database
+from colorama import Fore, init
+init()
 
 class Scraper(Database):
     def __init__(self, city, rooms, price_start, price_end, page):
@@ -40,15 +42,16 @@ class Scraper(Database):
                         links.append(link)
                         self.add_links(link)
                     else:
-                        print("Please provide the correct mode: 1 or 2")
+                        print(Fore.RED+"Please provide the correct mode: 1 or 2")
                         break
             except Exception as e:
-                print(e)
+                print(f'{Fore.YELLOW} {e}')
                 continue
         return links
     
     def get_adverts_data(self, links):
         if len(links) > 0:
+            print(f"{Fore.LIGHTMAGENTA_EX} scraping page: {self.page}")
             for link in links:
                 url = requests.get(link)
                 source = html.fromstring(url.content)
@@ -62,6 +65,7 @@ class Scraper(Database):
                 add_data_to_excel = Excel()
                 add_data_to_excel.add_data(input_data)
             return True
+        print(Fore.GREEN+"Haven't detected new adverts")
         return False
 
 if __name__ == "__main__":
@@ -74,12 +78,12 @@ if __name__ == "__main__":
     DATABSE = Database().db_main() #/// checkes database is exists and clears it
     scraper_main = Scraper(city,rooms,price_start,price_end,page) #// declared for the first time to get the number of pages
     pages = scraper_main.page_amount()
-    print("started work")
+    print(Fore.GREEN+"started work")
     for x in range(1,pages-1,1):
         scraper_main = Scraper(city,rooms,price_start,price_end,x) #// declared again but this time under the loop which iterates the pages
         links = scraper_main.get_all_adverts(mode) 
         get_data = scraper_main.get_adverts_data(links)
         if get_data == False:
             break
-    print("finished")
+    print(Fore.GREEN+"finished")
         
