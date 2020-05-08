@@ -4,19 +4,19 @@ class Data_scraper():
         self.soup = soup
     def get_location(self):
             try:
-                location = self.source.xpath("*//a[@class='show-map-link']//strong/text()")
+                location = self.source.xpath("*//div[@class='offer-user__address']//address//p/text()")
                 if len(location[0]) == 0:
                     raise Exception
             except:
                 try:
                     location = self.source.xpath("*//a[@class='css-12hd9gg']/text()")
                 except:
-                    locaation = ""
+                    location = ""
             finally:
-                return location[0]
+                return location
     def get_space(self):
         try:
-            space = self.source.xpath("*//table[@class='details fixed marginbott20 margintop5 full']//tr[3]//td[1]//td//strong/text()")
+            space = self.source.xpath("*//ul[@class='offer-details']//li//span[@class='offer-details__param']//strong/text()")
             if len(space) > 0:
                 clear_space = str(space[0]).strip().split(" ")
                 space = clear_space[0]
@@ -34,9 +34,9 @@ class Data_scraper():
 
     def get_rent(self):
         try:
-            rent= self.source.xpath("*//table[@class='details fixed marginbott20 margintop5 full']//tr[4]//td[1]//td//strong/text()")
+            rent = self.source.xpath("*//ul[@class='offer-details']//li//span[@class='offer-details__param']//strong/text()")
             if len(rent) > 0:
-                clear_rent = str(rent[0]).strip().split(" ")
+                clear_rent = str(rent[1]).strip().split(" ")
                 rent = clear_rent[0]
             else:
                 raise Exception
@@ -67,16 +67,15 @@ class Data_scraper():
             return description
     
     def get_images(self):
-        images_div = self.soup.find_all("div", {"class":"tcenter img-item"})
         images = []
-        if len(images_div) > 1:
-            for div in images_div:
+        try:
+            images_div = self.soup.find('ul', {"id":"descGallery"}).find_all("a")
+            for img in images_div:
                 try:
-                    image = div.find("img")
-                    images.append(image["src"])
+                    images.append(img["href"])
                 except:
                     continue
-        else:
+        except:
             images_figure = self.soup.find_all("figure", {"class":"thumbsItem"})
             for figure in images_figure:
                 try:
@@ -105,7 +104,7 @@ class Data_scraper():
 
     def get_price(self):
         try:
-            div_price = self.soup.find("div", {"class":"price-label"}).find("strong")
+            div_price = self.soup.find("div", {"class":"pricelabel"}).find("strong")
             if len(div_price) > 0:
                 price = str(div_price.text[:-3]).replace(" ", "")
             else:
